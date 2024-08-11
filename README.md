@@ -1,53 +1,79 @@
-Network Configuration Script
+# ChangeIP
 
-This Bash script helps you configure a static IP address on a Linux system. It prompts you for the necessary network details and then updates the network configuration file accordingly. The script also creates a backup of the current configuration before making any changes and restarts the networking service to apply the new settings.
-Features
+Static IP Configuration Script for Debian and Ubuntu
+Description
 
-    Prompts for:
-        Desired IP address
-        Subnet mask
-        Gateway address
-        DNS servers
-    Automatically determines the active network interface
-    Backs up the current network configuration file
-    Applies the new network settings
-    Restarts the networking service to apply changes
+This Bash script allows you to configure a static IP address on a Debian or Ubuntu machine. It guides you through the configuration process by asking for necessary information such as IP address, subnet mask, gateway, and DNS servers. The script automatically detects the primary network interface and applies the changes based on the selected operating system.
+Prerequisites
 
-Script Usage
+    A Debian or Ubuntu machine.
+    Superuser (root) privileges to run the script.
 
-    Run the script: Execute the script with root or sudo privileges.
+Instructions
+1. Download and Preparation
+
+    Download the script to your machine.
+    Ensure the script is executable by using the following command:
 
     bash
 
-    sudo ./configure_network.sh
+    chmod +x configurer_ip_fixe.sh
 
-    Input the required information:
-        IP address (e.g., 192.168.1.10)
-        Subnet mask (e.g., 255.255.255.0)
-        Gateway (e.g., 192.168.1.1)
-        DNS servers (space-separated, e.g., 8.8.8.8 8.8.4.4)
+2. Running the Script
 
-    Script execution: The script will automatically:
-        Detect the active network interface (assumed to be eth0 in this script)
-        Backup the current /etc/network/interfaces file
-        Write the new configuration to /etc/network/interfaces
-        Restart the networking service to apply the changes
+    Run the script with superuser privileges:
 
-Example
+    bash
 
-bash
+    sudo ./configurer_ip_fixe.sh
 
-$ sudo ./configure_network.sh
-Enter the desired IP address (e.g., 192.168.1.10): 192.168.1.100
-Enter the subnet mask (e.g., 255.255.255.0): 255.255.255.0
-Enter the gateway address (e.g., 192.168.1.1): 192.168.1.1
-Enter DNS servers (space-separated, e.g., 8.8.8.8 8.8.4.4): 8.8.8.8 8.8.4.4
+3. Operating System Selection
 
-After running the script, the new IP configuration will be applied and the network service will be restarted.
-Notes
+The script will prompt you to select your operating system:
 
-    Ensure that the script is run with sufficient privileges to modify network settings.
-    The script assumes the active network interface is detected correctly; manual adjustment may be needed for different configurations.
-    Backup of the existing network configuration is made to /etc/network/interfaces.bak.
+    1) For Debian
+    2) For Ubuntu
 
-Feel free to modify the script according to your network setup or requirements.
+Enter the number corresponding to your operating system and press Enter.
+4. Entering Network Information
+
+The script will then ask you to provide the following information:
+
+    IP Address: Enter the IP address you wish to configure (e.g., 192.168.1.10).
+    Subnet Mask: Enter the corresponding subnet mask (e.g., 255.255.255.0).
+    Gateway: Enter the gateway address (e.g., 192.168.1.1).
+    DNS Servers: Enter the DNS server addresses, separated by spaces (e.g., 8.8.8.8 8.8.4.4).
+
+5. Applying the Changes
+
+The script will apply the changes based on the selected operating system:
+
+    For Debian:
+        The /etc/network/interfaces file will be modified.
+        The networking service will be restarted to apply the changes.
+
+    For Ubuntu:
+        The netplan configuration file (/etc/netplan/01-netcfg.yaml) will be modified.
+        The netplan apply command will be executed to apply the changes.
+
+6. Confirmation
+
+Once the changes are applied, a message will confirm that the IP configuration was successful.
+Backup
+
+The script creates a backup of the configuration files before modifying them:
+
+    Debian: A copy of /etc/network/interfaces is saved as /etc/network/interfaces.bak.
+    Ubuntu: A copy of /etc/netplan/01-netcfg.yaml is saved as /etc/netplan/01-netcfg.yaml.bak.
+
+You can restore these files manually if needed.
+
+Limitations
+
+   The script assumes the primary network interface is the one used for the default route. If your network configuration is more complex, you may need to modify the script to specify the exact interface.
+   
+   The script is designed for simple network configurations and does not account for advanced scenarios such as managing multiple interfaces, advanced routing, or VLAN configurations.
+
+Disclaimer
+
+Use this script with caution, especially on production systems. It is recommended to test the script in a controlled environment before using it on critical servers.
